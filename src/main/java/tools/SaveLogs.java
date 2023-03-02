@@ -3,7 +3,7 @@ package tools;
 import java.io.*;
 
 public class SaveLogs {
-    private static final String LOG_PATH = System.getProperty("user.dir") + "/src/main/resources/databank/info.log";
+    private static final String LOG_PATH = System.getProperty("user.dir") + "/resources/info.log";
     public static synchronized void saveLog(LogType logType, String logString) {
         String log = readLogFile();
 

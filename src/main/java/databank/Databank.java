@@ -15,7 +15,7 @@ public class Databank {
     private static final Map<Long, Client> clientConnections = new ConcurrentHashMap<>();
     private static final Map<Long, List<Message>> savedMessages = new ConcurrentHashMap<>();
 
-    private static final String IDENTIFY_PATH = System.getProperty("user.dir") + "/src/main/resources/databank/allIDs.identify";
+    private static final String IDENTIFY_PATH = System.getProperty("user.dir") + "/resources/allIDs.identify";
 
     private Databank() {}
 
