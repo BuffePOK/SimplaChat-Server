@@ -9,7 +9,9 @@ import generaLinfo.User;
 import tools.LogType;
 import tools.SaveLogs;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ConnectionManagement extends Thread {
