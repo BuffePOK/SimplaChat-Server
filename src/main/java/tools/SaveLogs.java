@@ -7,13 +7,11 @@ public class SaveLogs {
     public static synchronized void saveLog(LogType logType, String logString) {
         String log = readLogFile();
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(log);
+        String logConstructor = log +
+                "[ " + logType + " ] " + "UNIX Time: " + System.currentTimeMillis() + " . " +
+                "Message: " + logString + "\n";
 
-        stringBuilder.append("[ ").append(logType).append(" ] ").append("UNIX Time: ").append(System.currentTimeMillis()).append(" . ");
-        stringBuilder.append("Message: ").append(logString).append("\n");
-
-        writeLogFile(stringBuilder.toString());
+        writeLogFile(logConstructor);
     }
 
     private static String readLogFile() {
@@ -24,7 +22,7 @@ public class SaveLogs {
             String ans;
             StringBuilder stringBuilder = new StringBuilder();
             while ((ans = br.readLine()) != null)
-                stringBuilder.append(ans + "\n");
+                stringBuilder.append(ans).append("\n");
 
             fr.close();
             br.close();
@@ -32,20 +30,19 @@ public class SaveLogs {
 
 
         } catch (FileNotFoundException e) {
-            final String firstSt = """
-                    -------------------------------------------------------------------------------------------------------------------------
-                    INFO = Information about starting connections.
-                    ERROR = Internal server errors.
-                    WARNING = Errors during the exchange of messages between the client and the server (Including intentional client errors).
-                    GETSEND_MESSAGE = The server received the message and sent it to the addressee.
-                    ADDQUEUE_MESSAGE = The server received the message, but the recipient is not online.
-                    SENDQUEUE_MESSAGE = Send all accumulated messages to the addressee.
-                    DISCONNECTION = Disconnecting the client.
-                    BREAK_CONNECTION = Failed to get IO Streams.
-                    AUTHORIZATION = Client authorization.
-                    REGISTRATION = Client registration.
-                    -------------------------------------------------------------------------------------------------------------------------
-                    """;
+            final String firstSt =
+                    "-------------------------------------------------------------------------------------------------------------------------\n" +
+                    "INFO = Information about starting connections.\n" +
+                    "ERROR = Internal server errors.\n" +
+                    "WARNING = Errors during the exchange of messages between the client and the server (Including intentional client errors).\n" +
+                    "GETSEND_MESSAGE = The server received the message and sent it to the addressee.\n" +
+                    "ADDQUEUE_MESSAGE = The server received the message, but the recipient is not online.\n" +
+                    "SENDQUEUE_MESSAGE = Send all accumulated messages to the addressee.\n" +
+                    "DISCONNECTION = Disconnecting the client.\n" +
+                    "BREAK_CONNECTION = Failed to get IO Streams.\n" +
+                    "AUTHORIZATION = Client authorization.\n" +
+                    "REGISTRATION = Client registration.\n" +
+                    "-------------------------------------------------------------------------------------------------------------------------\n";
             writeLogFile(firstSt);
             return firstSt;
         } catch (IOException e) {
