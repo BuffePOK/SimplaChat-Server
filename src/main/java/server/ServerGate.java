@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class ServerGate {
     public void findConnection() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(0);
+        ServerSocket serverSocket = new ServerSocket(65535);
         SaveLogs.saveLog(LogType.INFO, "Start server with: " + getMyIP() + ":" + serverSocket.getLocalPort());
 
         while (true) {
