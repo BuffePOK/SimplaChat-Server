@@ -14,10 +14,12 @@ public class ServerGate {
     public void findConnection() throws IOException {
         ServerSocket serverSocket = new ServerSocket(0);
         SaveLogs.saveLog(LogType.INFO, "Start server with: " + getMyIP() + ":" + serverSocket.getLocalPort());
+        System.out.println("Start server with: " + getMyIP() + ":" + serverSocket.getLocalPort());
 
         while (true) {
             Socket socket = serverSocket.accept();
             SaveLogs.saveLog(LogType.INFO, "Get new connection from: " + socket.getRemoteSocketAddress());
+            System.out.println("Get new connection from: " + socket.getRemoteSocketAddress());
 
             try {
                 ConnectionManagement management = new ConnectionManagement(socket);
@@ -25,7 +27,7 @@ public class ServerGate {
             }
             catch (IOException e) {
                 SaveLogs.saveLog(LogType.BREAK_CONNECTION, "Connection broken . Connection info: " + socket.getRemoteSocketAddress());
-                System.err.println("Error. Line 19. ServerGate.class");
+                System.err.println("Connection broken . Connection info: " + socket.getRemoteSocketAddress());
             }
         }
     }
@@ -33,13 +35,14 @@ public class ServerGate {
     private String getMyIP() {
         URL whatismyip = null;
         try {
-            whatismyip = new URL("http://checkip.amazonaws.com");
+            whatismyip = new URL("https://checkip.amazonaws.com");
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     whatismyip.openStream()));
 
             return in.readLine();
         } catch (IOException e) {
             SaveLogs.saveLog(LogType.ERROR, e.getMessage());
+            System.err.println(e);
             throw new RuntimeException(e);
         }
     }

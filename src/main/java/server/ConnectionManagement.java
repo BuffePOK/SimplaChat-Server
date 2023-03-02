@@ -51,6 +51,7 @@ public class ConnectionManagement extends Thread {
                 Talk answer = new Talk(TypeOfPartConnection.REGISTRATION, new User(id), null);
 
                 SaveLogs.saveLog(LogType.REGISTRATION, "Registered new user: " + id + " . Connection info: " + socket.getRemoteSocketAddress());
+                System.out.println("[REGISTRATION] " + "Registered new user: " + id + " . Connection info: " + socket.getRemoteSocketAddress());
 
                 try {
                     output.writeObject(answer);
@@ -65,6 +66,7 @@ public class ConnectionManagement extends Thread {
                     if (user == null) {
                         output.writeObject(new Talk(TypeOfPartConnection.AUTHENTICATION, false, null));
                         SaveLogs.saveLog(LogType.WARNING, "AUTHORIZATION FAILED. USER == NULL. Connection info: " + socket.getRemoteSocketAddress());
+                        System.out.println("[WARNING] " + "AUTHORIZATION FAILED. USER == NULL. Connection info: " + socket.getRemoteSocketAddress());
                         closeConnection();
                         break;
                     }
@@ -74,9 +76,11 @@ public class ConnectionManagement extends Thread {
                         isAuthorized = true;
                         output.writeObject(new Talk(TypeOfPartConnection.AUTHENTICATION, true, null));
                         SaveLogs.saveLog(LogType.AUTHORIZATION, "Connection info: " + socket.getRemoteSocketAddress() + " User ID: " + user.getUniqID());
+                        System.out.println("[AUTHORIZATION] " + "Connection info: " + socket.getRemoteSocketAddress() + " User ID: " + user.getUniqID());
                     } else {
                         output.writeObject(new Talk(TypeOfPartConnection.AUTHENTICATION, false, null));
                         SaveLogs.saveLog(LogType.WARNING, "AUTHORIZATION FAILED. USER NOT FIND. Connection info: " + socket.getRemoteSocketAddress() + " User ID: " + user.getUniqID());
+                        System.out.println("[WARNING] " + "AUTHORIZATION FAILED. USER NOT FIND. Connection info: " + socket.getRemoteSocketAddress() + " User ID: " + user.getUniqID());
                         closeConnection();
                     }
                 } catch (IOException e) {
@@ -87,6 +91,7 @@ public class ConnectionManagement extends Thread {
             if (talk.type == TypeOfPartConnection.ALL_MESSAGES) {
                 if (!isAuthorized) {
                     SaveLogs.saveLog(LogType.WARNING, "Try to get all messages, but not authorized. Connection info: " + socket.getRemoteSocketAddress());
+                    System.out.println("[WARNING] " + "Try to get all messages, but not authorized. Connection info: " + socket.getRemoteSocketAddress());
                     closeConnection();
                     break;
                 }
@@ -94,6 +99,7 @@ public class ConnectionManagement extends Thread {
                     output.writeObject(new Talk(TypeOfPartConnection.ALL_MESSAGES,
                             Databank.getMessages(user.getUniqID()), null));
                     SaveLogs.saveLog(LogType.SENDQUEUE_MESSAGE, "Connection info: " + socket.getRemoteSocketAddress() + "Send QueueMessages to: " + user.getUniqID());
+                    System.out.println("[SENDQUEUE_MESSAGE] " + "Connection info: " + socket.getRemoteSocketAddress() + "Send QueueMessages to: " + user.getUniqID());
                 } catch (IOException e) {
                     closeConnection();
                 }
@@ -102,6 +108,7 @@ public class ConnectionManagement extends Thread {
             if (talk.type == TypeOfPartConnection.MESSAGE) {
                 if (!isAuthorized) {
                     SaveLogs.saveLog(LogType.WARNING, "Try to send message, but not authorized. Connection info: " + socket.getRemoteSocketAddress());
+                    System.out.println("[WARNING] " + "Try to send message, but not authorized. Connection info: " + socket.getRemoteSocketAddress());
                     closeConnection();
                     break;
                 }
@@ -109,11 +116,13 @@ public class ConnectionManagement extends Thread {
                 Message message = (Message) talk.body;
                 if (message == null) {
                     SaveLogs.saveLog(LogType.WARNING, "Try to send null message. Connection info: " + socket.getRemoteSocketAddress() + " . User ID: " + user.getUniqID());
+                    System.out.println("[WARNING] " + "Try to send null message. Connection info: " + socket.getRemoteSocketAddress() + " . User ID: " + user.getUniqID());
                     closeConnection();
                     break;
                 }
                 if (message.getFromUserID() != user.getUniqID()) {
                     SaveLogs.saveLog(LogType.WARNING, "Try to send message from other person. Connection info: " + socket.getRemoteSocketAddress() + " . User ID: " + user.getUniqID());
+                    System.out.println("[WARNING] " + "Try to send message from other person. Connection info: " + socket.getRemoteSocketAddress() + " . User ID: " + user.getUniqID());
                     closeConnection();
                     break;
                 }
@@ -125,13 +134,16 @@ public class ConnectionManagement extends Thread {
                     try {
                         client.sendMessage(message, user);
                         SaveLogs.saveLog(LogType.GETSEND_MESSAGE, "Send message from user: " + message.getFromUserID() + " . To user: " + message.getToUserID());
+                        System.out.println("[GETSEND_MESSAGE] " + "Send message from user: " + message.getFromUserID() + " . To user: " + message.getToUserID());
                     } catch (IOException e) {
                         Databank.saveMessage(message);
                         SaveLogs.saveLog(LogType.ADDQUEUE_MESSAGE, "Message from user: " + message.getFromUserID() + " . To user: " + message.getToUserID() + " . Was added to queue.");
+                        System.out.println("[ADDQUEUE_MESSAGE] " + "Message from user: " + message.getFromUserID() + " . To user: " + message.getToUserID() + " . Was added to queue.");
                     }
                 } else {
                     Databank.saveMessage(message);
                     SaveLogs.saveLog(LogType.ADDQUEUE_MESSAGE, "Message from user: " + message.getFromUserID() + " . To user: " + message.getToUserID() + " . Was added to queue.");
+                    System.out.println("[ADDQUEUE_MESSAGE] " + "Message from user: " + message.getFromUserID() + " . To user: " + message.getToUserID() + " . Was added to queue.");
                 }
             }
         }
