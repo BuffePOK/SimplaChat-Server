@@ -1,0 +1,14 @@
+package tools;
+
+public enum LogType {
+    INFO,
+    ERROR,
+    WARNING,
+    GETSEND_MESSAGE,
+    ADDQUEUE_MESSAGE,
+    SENDQUEUE_MESSAGE,
+    DISCONNECTION,
+    BREAK_CONNECTION,
+    AUTHORIZATION,
+    REGISTRATION
+}
