@@ -14,6 +14,8 @@ public class Message implements Serializable, Comparable<Message> {
     private final long timeUNIX;
     private final LocalDateTime dateTime;
 
+    private static final long serialVersionUID = -7117113348408857601L;
+
     public Message(long fromUserID, long toUserID, String message) {
         this.fromUserID = fromUserID;
         this.toUserID = toUserID;
@@ -48,9 +50,6 @@ public class Message implements Serializable, Comparable<Message> {
     public LocalDateTime getDateTime() {
         return dateTime;
     }
-
-    @Serial
-    private static final long serialVersionUID = -7117113348408857601L;
 
     @Override
     public int compareTo(Message o) {

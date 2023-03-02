@@ -9,6 +9,8 @@ public class User implements Serializable {
     private String surname;
     private int age;
 
+    private static final long serialVersionUID = 8753248963608288165L;
+
     public User(long uniqID) {
         this.uniqID = uniqID;
         this.name = "No";
@@ -46,8 +48,6 @@ public class User implements Serializable {
 
     public void setAge(int age) { this.age = age; }
 
-    @Serial
-    private static final long serialVersionUID = 8753248963608288165L;
 
     @Override
     public String toString() {

@@ -16,6 +16,6 @@ public enum TypeOfPartConnection implements Serializable {
 
     GET_ONLINE_INFO; // Boolean
 
-    @Serial
+
     private static final long serialVersionUID = -6814364098954353765L;
 }

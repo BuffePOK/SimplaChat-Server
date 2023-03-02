@@ -13,6 +13,6 @@ public class Talk implements Serializable {
         this.body = body;
         this.additionalInfo = additionalInfo;
     }
-    @Serial
+
     private static final long serialVersionUID = 37087783987921275L;
 }
