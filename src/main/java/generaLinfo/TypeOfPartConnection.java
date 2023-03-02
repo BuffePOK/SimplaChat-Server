@@ -1,6 +1,5 @@
 package generaLinfo;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 public enum TypeOfPartConnection implements Serializable {
